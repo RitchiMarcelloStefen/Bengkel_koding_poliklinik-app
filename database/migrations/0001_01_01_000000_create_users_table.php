@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('alamat')->nullable();
-            $table->foreignId('id_poli')->nullable()->constrained('poli')->cascadeOnDelete();
+            $table->unsignedBigInteger('id_poli')->nullable();
             $table->string('no_ktp')->nullable();
             $table->string('no_hp')->nullable();
             $table->string('no_rm', 25)->nullable();
