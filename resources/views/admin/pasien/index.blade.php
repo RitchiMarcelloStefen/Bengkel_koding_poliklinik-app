@@ -30,7 +30,6 @@
                                 <th>No. KTP</th>
                                 <th>No. HP</th>
                                 <th>Email</th>
-                                <th>No. RM</th>
                                 <th style="width: 150px;">Aksi</th>
                             </tr>
                         </thead>
@@ -42,7 +41,6 @@
                                     <td>{{ $pasien->no_ktp }}</td>
                                     <td>{{ $pasien->no_hp }}</td>
                                     <td>{{ $pasien->email }}</td>
-                                    <td>{{ $pasien->no_rm }}</td>
                                     <td>
                                         <a href="{{ route('pasien.edit', $pasien->id) }}" class="btn btn-sm btn-warning">
                                             <i class="fas fa-edit"></i>Edit
@@ -58,7 +56,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="text-center" colspan="7">
+                                    <td class="text-center" colspan="6">
                                         Belum ada Pasien
                                     </td>
                                 </tr>

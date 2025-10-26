@@ -22,7 +22,6 @@ class User extends Authenticatable
         'alamat',
         'no_ktp',
         'no_hp',
-        'no_rm',
         'role',
         'id_poli',
         'email',
