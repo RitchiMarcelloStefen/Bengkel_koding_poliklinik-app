@@ -6,17 +6,17 @@
         <div class="col-lg-12">
 
             {{-- Alert flash message --}}
-            @if (session('message'))
-                <div class="alert alert-{{ session('type', 'success') }} alert-dismissible fade show" role="alert">
-                    {{ session('message') }}
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
-            <h1 class="mb-4">Data Dokter</h1>
+            <h1 class="mb-4">Data Jadwal Periksa</h1>
 
-            <a href="{{ route('dokter.create') }}" class="btn btn-primary mb-3">
-                <i class="fas fa-plus"></i> Tambah dokter
+            <a href="{{ route('jadwal-periksa.create') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-plus"></i> Tambah Jadwal Periksa
             </a>
 
             <div class="table-responsive">
@@ -24,33 +24,30 @@
                     <thead class="thead-light">
                         <tr>
                             <th>ID</th>
-                            <th>Nama</th>
-                            <th>Alamat</th>
-                            <th>No. HP</th>
-                            <th>Poli</th>
+                            <th>Hari</th>
+                            <th>Jam Mulai</th>
+                            <th>Jam Selesai</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($dokters as $dokter )
+                        @forelse ($jadwalPeriksa as $jadwal)
                             <tr>
-                                <td>{{ $dokter->id }}</td>
-                                <td>{{ $dokter->nama }}</td>
-                                <td>{{ $dokter->alamat }}</td>
-                                <td>{{ $dokter->no_hp }}</td>
+                                <td>{{ $jadwal->id }}</td>
+                                <td>{{ $jadwal->hari }}</td>
+                                <td>{{ $jadwal->jam_mulai }}</td>
+                                <td>{{ $jadwal->jam_selesai }}</td>
                                 <td>
-                                    <span class="badge bg-info">
-                                        {{ $dokter->poli->nama_poli ?? 'Belum Di pilih' }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="{{ route('dokter.edit', $dokter->id) }}" class="btn btn-sm btn-warning">
-                                        <i class="fas fa-edit"></i>Edit
+                                    <a href="{{ route('jadwal-periksa.show', $jadwal->id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i> Lihat
                                     </a>
-                                    <form action="{{ route('dokter.destroy', $dokter->id) }}" method="POST" style="display: inline-block;">
+                                    <a href="{{ route('jadwal-periksa.edit', $jadwal->id) }}" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <form action="{{ route('jadwal-periksa.destroy', $jadwal->id) }}" method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus dokter ini ?')">
+                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus jadwal periksa ini?')">
                                             <i class="fas fa-trash"></i> Hapus
                                         </button>
                                     </form>
@@ -58,8 +55,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td class="text-center" colspan="6">
-                                    Belum ada Dokter
+                                <td class="text-center" colspan="5">
+                                    Belum ada Jadwal Periksa
                                 </td>
                             </tr>
                         @endforelse

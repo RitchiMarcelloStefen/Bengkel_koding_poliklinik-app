@@ -114,4 +114,16 @@ class DokterController extends Controller
         ->with('type', 'success');
 }
 
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $dokter)
+    {
+        $dokter->delete();
+
+        return redirect()->route('dokter.index')
+            ->with('message', 'Data Dokter Berhasil di hapus')
+            ->with('type', 'success');
+    }
+
 }

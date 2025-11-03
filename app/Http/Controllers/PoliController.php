@@ -52,7 +52,7 @@ class PoliController extends Controller
     public function destroy($id)
     {
         $poli = Poli::findOrFail($id);
-        $poli->delete($poli);
+        $poli->delete();
         return redirect()->route('polis.index')->with('success', 'Polis Berhasil di hapus !');
     }
 }

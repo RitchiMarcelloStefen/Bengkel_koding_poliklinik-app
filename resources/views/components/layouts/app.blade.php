@@ -23,7 +23,7 @@
         @include('components.partials.sidebar')
         <div class="content-wrapper">
             @include('components.partials.header')
-            {{ $slot }}
+            @yield('content')
         </div>
         @include('components.partials.footer')
     </div>
