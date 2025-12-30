@@ -13,7 +13,11 @@
                     class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Halo! {{ Auth::user()->nama }}</a>
+                @if (Auth::user()->role == 'pasien')
+                    <a href="#" class="d-block">Halo! Pasien</a>
+                @else
+                    <a href="#" class="d-block">Halo! {{ Auth::user()->nama }}</a>
+                @endif
             </div>
         </div>
 

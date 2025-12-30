@@ -45,6 +45,17 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="stock" class="form-label">Stok <span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" class="form-control @error('stock') is-invalid @enderror"
+                                        id="stock" name="stock" value="{{ old('stock') }}" required min="0">
+                                    @error('stock')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <button type="submit" class="btn btn-success">

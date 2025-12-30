@@ -19,6 +19,32 @@
 
             <h1 class="mb-4">Data Obat</h1>
 
+            @if(isset($outOfStockMedicines) && $outOfStockMedicines->count() > 0)
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Stok Obat Habis!</strong>
+                    <p class="mb-2">Obat berikut telah habis stok dan perlu segera diisi ulang:</p>
+                    <ul class="mb-0">
+                        @foreach($outOfStockMedicines as $medicine)
+                            <li><strong>{{ $medicine->nama_obat }}</strong> - Perlu restock segera</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if(isset($lowStockMedicines) && $lowStockMedicines->count() > 0)
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong><i class="fas fa-exclamation-circle"></i> Stok Obat Menipis!</strong>
+                    <p class="mb-2">Obat berikut memiliki stok rendah (≤ 5):</p>
+                    <ul class="mb-0">
+                        @foreach($lowStockMedicines as $medicine)
+                            <li><strong>{{ $medicine->nama_obat }}</strong> - Stok tersisa: {{ $medicine->stock }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <a href="{{ route('obat.create') }}" class="btn btn-primary mb-3">
                 <i class="fas fa-plus"></i> Tambah Obat
             </a>
@@ -31,6 +57,7 @@
                             <th>Nama Obat</th>
                             <th>Kemasan</th>
                             <th>Harga</th>
+                            <th>Stok</th>
                             <th style="width: 150px;">Aksi</th>
                         </tr>
                     </thead>
@@ -41,10 +68,25 @@
                                 <td>{{ $obat->nama_obat }}</td>
                                 <td>{{ $obat->kemasan }}</td>
                                 <td>Rp {{ number_format($obat->harga, 0, ',', '.') }}</td>
+                                <td>{{ $obat->stock }}</td>
                                 <td>
                                     <a href="{{ route('obat.edit', $obat->id) }}" class="btn btn-sm btn-warning">
                                         <i class="fas fa-edit"></i>Edit
                                     </a>
+                                    <form action="{{ route('obat.addStock', $obat->id) }}" method="POST" style="display: inline-block; margin-right: 5px;">
+                                        @csrf
+                                        <input type="number" name="quantity" placeholder="Qty" min="1" style="width: 60px;" required>
+                                        <button type="submit" class="btn btn-sm btn-success" title="Tambah Stok">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('obat.reduceStock', $obat->id) }}" method="POST" style="display: inline-block; margin-right: 5px;">
+                                        @csrf
+                                        <input type="number" name="quantity" placeholder="Qty" min="1" style="width: 60px;" required>
+                                        <button type="submit" class="btn btn-sm btn-info" title="Kurangi Stok">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </form>
                                     <form action="{{ route('obat.destroy', $obat->id) }}" method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('DELETE')

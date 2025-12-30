@@ -13,7 +13,9 @@ class ObatController extends Controller
     public function index()
     {
         $obats = Obat::all();
-        return view('admin.obat.index', compact('obats'));
+        $outOfStockMedicines = Obat::where('stock', '=', 0)->get();
+        $lowStockMedicines = Obat::where('stock', '>', 0)->where('stock', '<=', 5)->get();
+        return view('admin.obat.index', compact('obats', 'outOfStockMedicines', 'lowStockMedicines'));
     }
 
     /**
@@ -33,6 +35,7 @@ class ObatController extends Controller
             'nama_obat' => 'required|string|max:255',
             'kemasan' => 'required|string|max:255',
             'harga' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
         ]);
 
         Obat::create($validated);
@@ -65,6 +68,7 @@ class ObatController extends Controller
             'nama_obat' => 'required|string|max:255',
             'kemasan' => 'required|string|max:255',
             'harga' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
         ]);
 
         $obat = Obat::findOrFail($id);
@@ -80,5 +84,37 @@ class ObatController extends Controller
         $obat = Obat::findOrFail($id);
         $obat->delete();
         return redirect()->route('obat.index')->with('success', 'Obat berhasil di hapus')->with('type', 'success');
+    }
+
+    /**
+     * Add stock to the specified resource.
+     */
+    public function addStock(Request $request, $id)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $obat = Obat::findOrFail($id);
+        $obat->increment('stock', $request->quantity);
+        return redirect()->route('obat.index')->with('success', 'Stok berhasil ditambahkan')->with('type', 'success');
+    }
+
+    /**
+     * Reduce stock from the specified resource.
+     */
+    public function reduceStock(Request $request, $id)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $obat = Obat::findOrFail($id);
+        if ($obat->stock >= $request->quantity) {
+            $obat->decrement('stock', $request->quantity);
+            return redirect()->route('obat.index')->with('success', 'Stok berhasil dikurangi')->with('type', 'success');
+        } else {
+            return redirect()->route('obat.index')->with('error', 'Stok tidak cukup')->with('type', 'danger');
+        }
     }
 }

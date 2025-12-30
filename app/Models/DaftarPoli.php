@@ -12,7 +12,8 @@ class DaftarPoli extends Model
         'id_pasien',
         'id_jadwal',
         'keluhan',
-        'no_antrian'
+        'no_antrian',
+        'id_poli'
     ];
 
     public function pasien(){
@@ -25,5 +26,9 @@ class DaftarPoli extends Model
 
     public function periksas(){
         return $this->hasMany(Periksa::class, 'id_daftar_poli');
+    }
+
+    public function poli(){
+        return $this->belongsTo(Poli::class, 'id_poli');
     }
 }

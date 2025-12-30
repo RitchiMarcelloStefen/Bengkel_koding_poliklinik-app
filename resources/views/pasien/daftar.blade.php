@@ -18,8 +18,11 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                    <label for="nama_pasien" class="form-label">Nama Pasien</label>
-                                    <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" value="{{ Auth::user()->nama }}" readonly>
+                                    <label for="nama_pasien" class="form-label">Nama Pasien <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control @error('nama_pasien') is-invalid @enderror" id="nama_pasien" name="nama_pasien" value="{{ old('nama_pasien', Auth::user()->nama) }}" required readonly>
+                                    @error('nama_pasien')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -41,7 +44,7 @@
                                     <select class="form-control @error('id_jadwal') is-invalid @enderror" id="id_jadwal" name="id_jadwal" required>
                                         <option value="">-- Pilih Jadwal --</option>
                                         @foreach($jadwalPeriksas as $jadwal)
-                                            <option value="{{ $jadwal->id }}" data-poli="{{ $jadwal->dokter->id_poli }}" style="display: none;">
+                                            <option value="{{ $jadwal->id }}" data-poli="{{ $jadwal->dokter->id_poli }}">
                                                 {{ $jadwal->dokter->nama }} - {{ $jadwal->hari }} ({{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }})
                                             </option>
                                         @endforeach

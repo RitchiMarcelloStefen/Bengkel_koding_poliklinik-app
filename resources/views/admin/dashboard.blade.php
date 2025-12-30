@@ -5,6 +5,32 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="mb-4">Halo Selamat Datang Admin</h1>
+
+            @if(isset($outOfStockMedicines) && $outOfStockMedicines->count() > 0)
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Stok Obat Habis!</strong>
+                    <p class="mb-2">Obat berikut telah habis stok dan perlu segera diisi ulang:</p>
+                    <ul class="mb-0">
+                        @foreach($outOfStockMedicines as $medicine)
+                            <li><strong>{{ $medicine->nama_obat }}</strong> - Perlu restock segera</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if(isset($lowStockMedicines) && $lowStockMedicines->count() > 0)
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong><i class="fas fa-exclamation-circle"></i> Stok Obat Menipis!</strong>
+                    <p class="mb-2">Obat berikut memiliki stok rendah (≤ 5):</p>
+                    <ul class="mb-0">
+                        @foreach($lowStockMedicines as $medicine)
+                            <li><strong>{{ $medicine->nama_obat }}</strong> - Stok tersisa: {{ $medicine->stock }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="row">
                 <div class="col-md-3 mb-4">
                     <div class="card">

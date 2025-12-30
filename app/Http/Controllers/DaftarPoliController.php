@@ -20,6 +20,7 @@ class DaftarPoliController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'id_poli' => 'required|exists:poli,id',
             'id_jadwal' => 'required|exists:jadwal_periksa,id',
             'keluhan' => 'required|string',
         ]);
@@ -33,6 +34,7 @@ class DaftarPoliController extends Controller
             'id_jadwal' => $request->id_jadwal,
             'keluhan' => $request->keluhan,
             'no_antrian' => $no_antrian,
+            'id_poli' => $request->id_poli,
         ]);
 
         return redirect()->route('pasien.dashboard')->with('success', 'Pendaftaran poli berhasil!');

@@ -22,13 +22,17 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
-        return view('admin.dashboard');
+        $outOfStockMedicines = \App\Models\Obat::where('stock', '=', 0)->get();
+        $lowStockMedicines = \App\Models\Obat::where('stock', '>', 0)->where('stock', '<=', 5)->get();
+        return view('admin.dashboard', compact('outOfStockMedicines', 'lowStockMedicines'));
     })->name('admin.dashboard');
 
     Route::resource('polis', PoliController::class);
     Route::resource('dokter', DokterController::class);
     Route::resource('pasien', PasienController::class);
     Route::resource('obat', ObatController::class);
+    Route::post('obat/{id}/add-stock', [ObatController::class, 'addStock'])->name('obat.addStock');
+    Route::post('obat/{id}/reduce-stock', [ObatController::class, 'reduceStock'])->name('obat.reduceStock');
 });
 
 Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->group(function () {
@@ -38,6 +42,7 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->group(function () 
 
     Route::resource('jadwal-periksa', JadwalPeriksaController::class);
     Route::resource('periksa-pasien', PeriksaController::class);
+    Route::get('periksa-pasien/create/{id_daftar_poli}', [PeriksaController::class, 'createWithPatient'])->name('periksa-pasien.createWithPatient');
     Route::resource('riwayat-pasien', RiwayatController::class);
 });
 
